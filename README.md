@@ -45,5 +45,6 @@ Additional libs installed during development:
 <li> npm install redux-thunk : For supporting middleware in the redux ecosystem</li> 
 <li> npm install redux : For supporting redux based state management<</li> 
 <li> npm install react-redux : For supporting redux ecosystem</li> 
+<li> npm install redux-form : To manage form state seamlessly</li>
 
 
