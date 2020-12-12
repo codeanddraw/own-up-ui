@@ -1,34 +1,38 @@
 import Table from 'react-bootstrap/Table'
 
-function TableContainer() {
+function TableContainer({ quotesList }) {
   let classname = 'ownUp'
+  let quotes = (quotesList.quotes && quotesList.quotes[0]) || []
 
   return (
     <div className={`${classname}-TableContainer`}>
-        <Table responsive="lg">
-          <thead>
-            <tr>
-              <th>LENDER</th>
-              <th>PRODUCT</th>
-              <th>RATE</th>
-              <th>CLOSING COSTS</th>
-              <th>MONTHLY PAYMENT</th>
-              <th>APR</th>
+      <Table responsive="lg">
+        <thead>
+          <tr>
+            <th>LENDER</th>
+            <th>PRODUCT</th>
+            <th>RATE</th>
+            <th>CLOSING COSTS</th>
+            <th>MONTHLY PAYMENT</th>
+            <th>APR</th>
+          </tr>
+        </thead>
+        <tbody>
+          {quotes && quotes.map((item, index) => {
+            return <tr key={index}>
+              <td>{item.lenderName}</td>
+              <td>{item.loanType}</td>
+              <td>{item.interestRate}</td>
+              <td>{item.closingCosts}</td>
+              <td>{item.monthlyPayment}</td>
+              <td>{item.apr}</td>
             </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>1</td>
-              <td>Table cell</td>
-              <td>Table cell</td>
-              <td>Table cell</td>
-              <td>Table cell</td>
-              <td>Table cell</td>
-            </tr>
-          </tbody>
-        </Table>
+          })}
 
-       
+        </tbody>
+      </Table>
+
+
 
     </div>
   );
