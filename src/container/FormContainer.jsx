@@ -90,7 +90,7 @@ let FormContainer = props => {
     </Form.Group>
 
     <Form.Group as={Row}>
-      <Col sm={{ span: 10, offset: 10 }}>
+      <Col sm={{ offset: 10 }}>
         <Button type="submit" bsPrefix="ownUp-btn">Quote Rates</Button>
       </Col>
     </Form.Group>
