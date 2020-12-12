@@ -1,58 +1,105 @@
+import { reduxForm, Field } from 'redux-form';
 import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import Form from 'react-bootstrap/Form';
 
-function FormContainer() {
-  let classname = 'ownUp'
+/**
+ * validation on the form fields
+ */
+const validate = val => {
+  const errors = {};
 
-  return (
-    <div className={`${classname}-FormContainer`}>
+  if (!val.loanSize) {
+    console.log('loanSize is required');
+    errors.loanSize = 'Required';
+  } else if (isNaN(Number(val.loanSize))) {
+    errors.loanSize = 'Must be a number'
+  }
 
-      <Form>
-        <Form.Group as={Row} controlId="formHorizontalLoan">
-          <Form.Label column sm={2}> Loan Size </Form.Label>
-          <Col sm={3}> 
-             <Form.Control type="text" placeholder="Loan" /> 
-          </Col>
+  if (!val.propertyType) {
+    console.log('propertyType is required');
+    errors.propertyType = 'Required';
+  }
 
-          <Form.Label column sm={2}>Property Type</Form.Label>
-          <Col sm={3}> 
-          <Form.Control as="select" defaultValue="Choose...">
-            <option>Choose Property Type...</option>
-            <option>SingleFamily</option>
-            <option>Condo</option>
-            <option>Townhouse</option>
-            <option>MultiFamily</option>
-          </Form.Control>
-          </Col>
-        </Form.Group>
+  if (!val.creditScore) {
+    console.log('creditScore is required');
+    errors.creditScore = 'Required'
+  } else if (isNaN(Number(val.creditScore))) {
+    errors.creditScore = 'Must be a number'
+  } else if (Number(val.creditScore) < 300 || Number(val.creditScore > 800)) {
+    errors.creditScore = 'Sorry, credit score should be between 300 and 800'
+  }
 
-        <Form.Group as={Row} controlId="formHorizontalScore">
-          <Form.Label column sm={2}> Credit Score </Form.Label>
-          <Col sm={3}> <Form.Control type="text" placeholder="Score" /> </Col>
-        
-          <Form.Label column sm={2}>Occupancy</Form.Label>
-          <Col sm={3}> 
-          <Form.Control as="select" defaultValue="Choose...">
-            <option>Choose Occupancy...</option>
-            <option>Primary</option>
-            <option>Secondary</option>
-            <option>Investment</option>
-          </Form.Control>
-          </Col>
-        
-        </Form.Group>
-      
-        <Form.Group as={Row}>
-          <Col sm={{ span: 10, offset: 10 }}>
-            <Button type="submit" bsPrefix="ownUp-btn">Quote Rates</Button>
-          </Col>
-        </Form.Group>
-        </Form>
-        
-    </div>
-  );
+  if (!val.occupancy) {
+    console.log('occupancy is required');
+    errors.occupancy = 'Required';
+  }
+
+  return errors;
+};
+
+/**
+ * Renders the fields and error message
+ */
+const renderField = ({ input, classname, label, type, meta: { touched, error, warning } }) => {
+  return <>
+    <Form.Label column sm={2}> {label} </Form.Label>
+    <Col sm={3}>
+      <Form.Control {...input} type={type} placeholder={label} />
+      {touched && ((error && <span className={`${classname}-error`}>{error}</span>) || (warning && <span className={`${classname}-warning`} >{warning}</span>))}
+    </Col>
+  </>
 }
+
+/**
+* Renders the dropdown 
+*/
+const renderDropDown = (input, name, label, type, classname) => {
+  return <>
+    <Form.Label column sm={2}> {label} </Form.Label>
+    <Col sm={3}>
+      <Field as={type} className={classname} name={name} component={type} >
+        <option />
+        {input.map((item, index) => {
+          return <option key={index}> {item} </option>
+        })}
+      </Field>
+    </Col>
+  </>
+}
+
+/**
+ * Renders the complete Form Container
+ */
+let FormContainer = props => {
+  const { handleSubmit } = props;
+  let classname = 'ownUp'
+  let propertyTypeArray = ["SingleFamily", "Condo", "Townhouse", "MultiFamily"]
+  let occupancyTypeArray = ["Primary", "Secondary", "Investment"]
+
+  return <Form onSubmit={handleSubmit} className={`${classname}-FormContainer`}>
+    <Form.Group as={Row} controlId="formHorizontalLoan">
+      <Field classname={`${classname}-field__input`} name="loanSize" component={renderField} type="text" label="Loan Size" />
+      {renderDropDown(propertyTypeArray, "propertyType", "Property Type", "select", `${classname}-field__select`)}
+    </Form.Group>
+
+    <Form.Group as={Row} controlId="formHorizontalLoan">
+      <Field classname={`${classname}-field__input`} name="creditScore" component={renderField} type="text" label="Credit Score" />
+      {renderDropDown(occupancyTypeArray, "occupancy", "Occupancy", "select", `${classname}-field__select`)}
+    </Form.Group>
+
+    <Form.Group as={Row}>
+      <Col sm={{ span: 10, offset: 10 }}>
+        <Button type="submit" bsPrefix="ownUp-btn">Quote Rates</Button>
+      </Col>
+    </Form.Group>
+  </Form>;
+};
+
+FormContainer = reduxForm({
+  form: 'submissionForm',
+  validate,
+})(FormContainer);
 
 export default FormContainer;
