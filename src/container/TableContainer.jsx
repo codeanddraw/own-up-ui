@@ -2,7 +2,7 @@ import Table from 'react-bootstrap/Table'
 
 function TableContainer({ quotesList }) {
   let classname = 'ownUp'
-  let quotes = (quotesList.quotes && quotesList.quotes[0]) || []
+  let quotes = (quotesList.quotes && quotesList.quotes[quotesList.quotes.length-1]) || []
 
   return (
     <div className={`${classname}-TableContainer`}>
