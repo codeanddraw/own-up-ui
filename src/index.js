@@ -1,17 +1,20 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { createStore, applyMiddleware } from 'redux';
-import thunk from 'redux-thunk';
 
 import './stylesheets/component/Header.css'
+import './stylesheets/container/TableContainer.css'
 import './stylesheets/container/FormContainer.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import App from './App';
-import reducers from './reducers';
+import store from './store/store'
 
-const store = createStore(reducers, applyMiddleware(thunk));
 require('dotenv').config()
+
+/**
+ * Code is attached to the root dom here
+ * @return {APP}
+ */
 ReactDOM.render(
   <Provider store={store}>
     <App />
