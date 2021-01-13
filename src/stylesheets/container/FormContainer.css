@@ -5,7 +5,21 @@
   color: rgb(185, 34, 34);
 }
 
+.ownUp-field__select-error{
+  width: 100%;
+  margin-top: .25rem;
+  font-size: 80%;
+  color: rgb(185, 34, 34);
+}
+
 .ownUp-field__input-warning{
+  width: 100%;
+  margin-top: .25rem;
+  font-size: 80%;
+  color: rgb(255, 168, 6);
+}
+
+.ownUp-field__select-warning{
   width: 100%;
   margin-top: .25rem;
   font-size: 80%;
